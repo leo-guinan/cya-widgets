@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import "./ChatWidget.css";
 
 interface Message {
@@ -6,6 +6,9 @@ interface Message {
     sender: string;
     message: string;
 }
+// @ts-ignore - this is expected to be set in the usage script injected on the including page
+const API_KEY = window.widgetApiKey
+const API_URL = `https://chooseyouralgorithm.com/api/chat/${API_KEY}/`
 const ChatWidget = () => {
     const [showChat, setShowChat] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
@@ -13,12 +16,12 @@ const ChatWidget = () => {
     const [useId, setUseId] = useState(-1)
 
 
-
     const fetchMessages = async () => {
         // Retrieve messages from the backend
         // Replace the content with actual data from your server
         console.log(inputMessage)
-        const response = await fetch("http://localhost:8000/api/chat/baee7ee0-31f0-4c68-88e2-3c999860bc80/", {
+
+        const response = await fetch(API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -40,13 +43,13 @@ const ChatWidget = () => {
     };
 
     useEffect(() => {
-        // TODO: Implement backend fetch method to retrieve messages from the server
         fetchMessages();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setMessages([...messages, { id: 1, sender: "user", message: inputMessage }]);
+        setMessages([...messages, {id: 1, sender: "user", message: inputMessage}]);
         await sendMessage(inputMessage);
 
         setInputMessage("");
@@ -56,7 +59,7 @@ const ChatWidget = () => {
         // Send the message to the backend
         // Implement the required logic to communicate with your server
         console.log("Sending message:", messageContent);
-        const response = await fetch("http://localhost:8000/api/chat/baee7ee0-31f0-4c68-88e2-3c999860bc80/", {
+        const response = await fetch(API_URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -77,7 +80,7 @@ const ChatWidget = () => {
         console.log(newMessage)
         setUseId(data.use_id)
 
-        setMessages([...messages, { id: 1, sender: "user", message: inputMessage }, newMessage]);
+        setMessages([...messages, {id: 1, sender: "user", message: inputMessage}, newMessage]);
     };
 
     return (
