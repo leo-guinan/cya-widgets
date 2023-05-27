@@ -8,7 +8,7 @@ interface Message {
 }
 // @ts-ignore - this is expected to be set in the usage script injected on the including page
 const API_KEY = window.widgetApiKey
-const API_URL = `https://chooseyouralgorithm.com/api/chat/${API_KEY}/`
+const API_URL = `https://api.chooseyouralgorithm.com/api/chat/${API_KEY}/`
 const ChatWidget = () => {
     const [showChat, setShowChat] = useState(false);
     const [messages, setMessages] = useState<Message[]>([]);
